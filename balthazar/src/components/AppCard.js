@@ -23,19 +23,26 @@ const styles = {
   },
 };
 
-class CardGrid extends Component {
+class AppCard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount(){
+    console.log(this.props.oil);
+  }
+
   render() {
     return (
       <Card style={styles.card}>
         <CardContent>
           <Typography type="headline" component="h2" style={styles.headline}>
-            Lavender
+            {this.props.oil.name}
           </Typography>
           <div style={styles.chips}>
-            <Chip label="Basic Chip" style={styles.chip}/>
-            <Chip label="Basic Chip" style={styles.chip}/>
-            <Chip label="Basic Chip" style={styles.chip}/>
-            <Chip label="Basic Chip" style={styles.chip}/>
+          {this.props.oil.tags.map(tag => (
+            <Chip label={tag} style={styles.chip} key={tag}/>
+          ))}
           </div>
         </CardContent>
       </Card>
@@ -43,4 +50,4 @@ class CardGrid extends Component {
   }
 }
 
-export default CardGrid;
+export default AppCard;

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 // Own Components
-import Card from './Card';
+import AppCard from './AppCard';
 
 // Material UI
 import Grid from 'material-ui/Grid';
@@ -21,9 +21,9 @@ class CardGrid extends Component {
   render() {
     return (
       <Grid container style={styles.container}>
-        {[0, 1, 2].map(value => (
-          <Grid key={value} item>
-            <Card />
+        {this.props.oils.map(oil => (
+          <Grid key={oil.name} item>
+            <AppCard oil={oil} />
           </Grid>
         ))}
       </Grid>
