@@ -9,6 +9,7 @@ import AddButton from './components/AddButton';
 import AppMenu from './components/AppMenu';
 import CardGrid from './components/CardGrid';
 import Modal from './components/Modal';
+import Filter from './components/Filter';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -26,15 +27,17 @@ const theme = createMuiTheme({
 });
 
 // Init Data
-const fb = fire.database().ref('oils');
+const fb = fire.database();
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataInit: false,
+      dataOilsInit: false,
+      dataTagsInit: false,
       oils: [],
       modalOpen: false,
+      tags: [],
     };
 
     this.addOil = this.addOil.bind(this);
@@ -42,14 +45,14 @@ class App extends Component {
   }
 
   componentWillMount() {
-    let oilsRef = fb.orderByKey().limitToLast(100);
+    let oilsRef = fb.ref('oils').orderByKey().limitToLast(100);
     oilsRef.on('child_added', snapshot => {
       let oil = { text: snapshot.val(), id: snapshot.key };
       this.setState({ oils: [oil].concat(this.state.oils) });
     });
     oilsRef.once('value', snapshot => {
       let oils = [];
-      console.log('Value', snapshot.val());
+      console.log('Value Oils', snapshot.val());
       snapshot.forEach(snapshot => {
         oils.push({
           name: snapshot.child('name').val(),
@@ -57,13 +60,36 @@ class App extends Component {
         });
       });
       this.setState({ oils: oils }, () => {
-        this.setState({ dataInit: true });
+        this.setState({ dataOilsInit: true });
       });
     });
+
+    let tagsRef = fb.ref('tags').orderByKey().limitToLast(100);
+    tagsRef.on('child_added', snapshot => {
+      let tag = { text: snapshot.val(), id: snapshot.key };
+      this.setState({ tags: [tag].concat(this.state.tags) });
+    });
+    tagsRef.once('value', snapshot => {
+      let tags = [];
+      console.log('Value Tags', snapshot.val());
+      snapshot.forEach(snapshot => {
+        tags.push(snapshot.val());
+        console.log(snapshot.val());
+      });
+      this.setState({ tags: tags }, () => {
+        this.setState({ dataTagsInit: true });
+      });
+    });
+
   }
 
   addOil(oil) {
     fire.database().ref('oils').push(oil);
+
+    for (let i = 0, iMax = oil.tags.length; i < iMax; i += 1) {
+      fire.database().ref('tags').push(oil.tags[i]);
+    }
+
     this.toggleModal();
   }
 
@@ -83,8 +109,9 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <AppMenu />
-        { this.state.dataInit === true &&
+        { this.state.dataOilsInit && this.state.dataTagsInit &&
           <div>
+            <Filter tags={this.state.tags} />
             <CardGrid oils={this.state.oils} />
             <AddButton onClick={this.toggleModal} />
             <Modal
