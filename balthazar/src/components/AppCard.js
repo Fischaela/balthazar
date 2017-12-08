@@ -24,14 +24,6 @@ const styles = {
 };
 
 class AppCard extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount(){
-    console.log(this.props.oil);
-  }
-
   render() {
     return (
       <Card style={styles.card}>
