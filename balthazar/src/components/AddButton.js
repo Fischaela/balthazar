@@ -17,7 +17,7 @@ const styles = {
 class AddButton extends Component {
   render() {
     return (
-      <Button fab color="primary" aria-label="add" style={styles.button}>
+      <Button fab color="primary" aria-label="add" style={styles.button} onClick={this.props.onClick}>
         <AddIcon />
       </Button>
     );
