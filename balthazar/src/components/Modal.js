@@ -11,6 +11,18 @@ import Dialog, {
 import TextField from 'material-ui/TextField';
 import Chip from 'material-ui/Chip';
 
+// Styles
+const styles = {
+  chip: {
+    margin: '4px',
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '20px -4px 0',
+  },
+};
+
 class Modal extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +34,9 @@ class Modal extends Component {
 
     this.handleRequestChipDelete = this.handleRequestChipDelete.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   };
 
   addChip() {
-    console.log('Adding Chip: ', this.state.currentTag);
     this.state.tags.push(this.state.currentTag);
   }
 
@@ -42,7 +52,6 @@ class Modal extends Component {
       });
       document.getElementById('tags').value = '';
     }
-    console.log(this.state);
   };
 
   handleRequestChipDelete = data => () => {
@@ -81,15 +90,18 @@ class Modal extends Component {
             onChange={this.handleChange('currentTag')}
             onKeyDown={this.handleChange('currentTag')}
           />
-          { this.state.tags.map(value => {
-            return(
-              <Chip
-                label={value}
-                key={value}
-                onRequestDelete={this.handleRequestChipDelete(value)}
-              />
-            );
-          })}
+          <div style={styles.chips}>
+            { this.state.tags.map(value => {
+              return(
+                <Chip
+                  style={styles.chip}
+                  label={value}
+                  key={value}
+                  onRequestDelete={this.handleRequestChipDelete(value)}
+                />
+              );
+            })}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.handleRequestClose} color="primary">
