@@ -8,6 +8,7 @@ import fire from './fire';
 import AddButton from './components/AddButton';
 import AppMenu from './components/AppMenu';
 import CardGrid from './components/CardGrid';
+import Modal from './components/Modal';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -18,50 +19,82 @@ import pink from 'material-ui/colors/pink';
 // Theming
 const theme = createMuiTheme({
   palette: {
-    type: 'dark',
     primary: blueGrey,
     secondary: lime,
     error: pink,
   },
 });
 
+// Init Data
+const fb = fire.database().ref('oils');
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      dataInit: false,
+      oils: [],
+      modalOpen: false,
     };
+
+    this.addOil = this.addOil.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  componentWillMount(){
-    let messagesRef = fire.database().ref('messages').orderByKey().limitToLast(100);
-    messagesRef.on('child_added', snapshot => {
-      let message = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ messages: [message].concat(this.state.messages) });
-    })
+  componentWillMount() {
+    let oilsRef = fb.orderByKey().limitToLast(100);
+    oilsRef.on('child_added', snapshot => {
+      let oil = { text: snapshot.val(), id: snapshot.key };
+      this.setState({ oils: [oil].concat(this.state.oils) });
+    });
+    oilsRef.once('value', snapshot => {
+      let oils = [];
+      console.log('Value', snapshot.val());
+      snapshot.forEach(snapshot => {
+        oils.push({
+          name: snapshot.child('name').val(),
+          tags: snapshot.child('tags').val(),
+        });
+      });
+      this.setState({ oils: oils }, () => {
+        this.setState({ dataInit: true });
+      });
+    });
   }
 
-  addMessage(e){
-    e.preventDefault();
-    fire.database().ref('messages').push( this.inputEl.value );
-    this.inputEl.value = '';
+  addOil(oil) {
+    fire.database().ref('oils').push(oil);
+    this.toggleModal();
+  }
+
+  toggleModal() {
+    if (this.state.modalOpen === true) {
+      this.setState({
+        modalOpen: false,
+      });
+    } else {
+      this.setState({
+        modalOpen: true,
+      });
+    }
   }
 
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <form onSubmit={this.addMessage.bind(this)}>
-          <input type="text" ref={ el => this.inputEl = el }/>
-          <input type="submit"/>
-          <ul>
-            {
-              this.state.messages.map( message => <li key={message.id}>{message.text}</li> )
-            }
-          </ul>
-        </form>
         <AppMenu />
-        <CardGrid />
-        <AddButton />
+        { this.state.dataInit === true &&
+          <div>
+            <CardGrid oils={this.state.oils} />
+            <AddButton onClick={this.toggleModal} />
+            <Modal
+              ref="modal"
+              isOpen={this.state.modalOpen}
+              handleRequestClose={this.toggleModal}
+              handleRequestAdd={this.addOil}
+            />
+          </div>
+        }
       </MuiThemeProvider>
     );
   }
