@@ -63,7 +63,10 @@ class Modal extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.handleRequestAdd(this.state.name);
+    this.props.handleRequestAdd({
+      name: this.state.name,
+      tags: this.state.tags,
+    });
   };
 
   render() {
