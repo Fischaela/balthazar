@@ -29,26 +29,26 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      oils: [],
       modalOpen: false,
     };
 
-    this.addMessage = this.addMessage.bind(this);
+    this.addOil = this.addOil.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentWillMount() {
-    let messagesRef = fire.database().ref('messages').orderByKey().limitToLast(100);
-    messagesRef.on('child_added', snapshot => {
-      let message = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ messages: [message].concat(this.state.messages) });
+    let oilsRef = fire.database().ref('oils').orderByKey().limitToLast(100);
+    oilsRef.on('child_added', snapshot => {
+      let oil = { text: snapshot.val(), id: snapshot.key };
+      this.setState({ oils: [oil].concat(this.state.oils) });
     })
   }
 
-  addMessage(e) {
-    e.preventDefault();
-    fire.database().ref('messages').push( this.inputEl.value );
-    this.inputEl.value = '';
+  addOil(oil) {
+    console.log(oil);
+    fire.database().ref('oils').push(oil);
+    this.toggleModal();
   }
 
   toggleModal() {
@@ -69,7 +69,12 @@ class App extends Component {
         <AppMenu />
         <CardGrid />
         <AddButton onClick={this.toggleModal} />
-        <Modal isOpen={this.state.modalOpen} handleRequestClose={this.toggleModal} />
+        <Modal
+          ref="modal"
+          isOpen={this.state.modalOpen}
+          handleRequestClose={this.toggleModal}
+          handleRequestAdd={this.addOil}
+        />
       </MuiThemeProvider>
     );
   }
