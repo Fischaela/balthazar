@@ -36,6 +36,7 @@ class App extends Component {
       dataOilsInit: false,
       oils: [],
       modalOpen: false,
+      tags: [],
     };
 
     this.addOil = this.addOil.bind(this);
@@ -50,6 +51,7 @@ class App extends Component {
     });
     oilsRef.once('value', snapshot => {
       let oils = [];
+      let tags = [];
       console.log('Value Oils', snapshot.val());
       snapshot.forEach(snapshot => {
         oils.push({
@@ -57,10 +59,32 @@ class App extends Component {
           tags: snapshot.child('tags').val(),
         });
       });
-      this.setState({ oils: oils }, () => {
+      tags = this.getTagsFromOils(oils);
+      this.setState({
+        oils: oils,
+        tags: tags,
+      }, () => {
         this.setState({ dataOilsInit: true });
       });
     });
+  }
+
+  getTagsFromOils(oils) {
+    let tags = [];
+
+    for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
+      if (oils[i].tags) {
+        for (let j = 0, jMax = oils[i].tags.length; j < jMax; j += 1) {
+          tags.push(oils[i].tags[j]);
+        }
+      }
+    }
+    tags = tags.filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+    });
+
+    console.log('Tags', tags);
+    return tags;
   }
 
   addOil(oil) {
@@ -91,7 +115,7 @@ class App extends Component {
         <AppMenu />
         { this.state.dataOilsInit &&
           <div>
-            <Filter />
+            <Filter tags={this.state.tags} />
             <CardGrid oils={this.state.oils} />
             <AddButton onClick={this.toggleModal} />
             <Modal

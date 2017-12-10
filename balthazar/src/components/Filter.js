@@ -22,12 +22,15 @@ const styles = {
 class Filter extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
   }
 
   render() {
     return (
       <div style={styles.container}>
-           <Chip label="test" style={styles.chip} key="test"/>
+      {this.props.tags.map(tag => (
+        <Chip label={tag} style={styles.chip} key={tag}/>
+      ))}
       </div>
     );
   }
