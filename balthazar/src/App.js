@@ -112,7 +112,15 @@ class App extends Component {
           tags: snapshot.child('tags').val(),
         });
       });
+      oils.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+      });
       tags = this.getTagsFromOils(oils);
+      tags.sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+      });
       this.setState({
         oils: oils,
         filteredOils: oils,
