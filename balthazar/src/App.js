@@ -35,12 +35,14 @@ class App extends Component {
     this.state = {
       dataOilsInit: false,
       oils: [],
+      filteredOils: [],
       modalOpen: false,
       tags: [],
     };
 
     this.addOil = this.addOil.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.filterView = this.filterView.bind(this);
   }
 
   componentWillMount() {
@@ -62,10 +64,45 @@ class App extends Component {
       tags = this.getTagsFromOils(oils);
       this.setState({
         oils: oils,
+        filteredOils: oils,
         tags: tags,
       }, () => {
         this.setState({ dataOilsInit: true });
       });
+    });
+  }
+
+  addOil(oil) {
+    fire.database().ref('oils').push(oil);
+
+    for (let i = 0, iMax = oil.tags.length; i < iMax; i += 1) {
+      fire.database().ref('tags').push(oil.tags[i]);
+    }
+
+    this.toggleModal();
+  }
+
+  filterView(tag) {
+    console.log('Tag Click', tag);
+    const oils = this.state.oils;
+    let filteredOils = [];
+
+    for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
+      if (oils[i].tags) {
+        for (let j = 0, jMax = oils[i].tags.length; j < jMax; j += 1) {
+          if (oils[i].tags[j] === tag) {
+            filteredOils.push(oils[i]);
+          }
+        }
+      }
+    }
+
+    filteredOils = filteredOils.filter(function(elem, index, self) {
+      return index == self.indexOf(elem);
+    });
+
+    this.setState({
+      filteredOils: filteredOils,
     });
   }
 
@@ -80,21 +117,11 @@ class App extends Component {
       }
     }
     tags = tags.filter(function(elem, index, self) {
-        return index == self.indexOf(elem);
+      return index == self.indexOf(elem);
     });
 
     console.log('Tags', tags);
     return tags;
-  }
-
-  addOil(oil) {
-    fire.database().ref('oils').push(oil);
-
-    for (let i = 0, iMax = oil.tags.length; i < iMax; i += 1) {
-      fire.database().ref('tags').push(oil.tags[i]);
-    }
-
-    this.toggleModal();
   }
 
   toggleModal() {
@@ -115,8 +142,8 @@ class App extends Component {
         <AppMenu />
         { this.state.dataOilsInit &&
           <div>
-            <Filter tags={this.state.tags} />
-            <CardGrid oils={this.state.oils} />
+            <Filter tags={this.state.tags} handleClick={this.filterView}/>
+            <CardGrid oils={this.state.filteredOils} />
             <AddButton onClick={this.toggleModal} />
             <Modal
               ref="modal"

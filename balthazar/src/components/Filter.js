@@ -22,14 +22,13 @@ const styles = {
 class Filter extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
   }
 
   render() {
     return (
       <div style={styles.container}>
       {this.props.tags.map(tag => (
-        <Chip label={tag} style={styles.chip} key={tag}/>
+        <Chip label={tag} style={styles.chip} key={tag} onClick={() => this.props.handleClick(tag)} />
       ))}
       </div>
     );
