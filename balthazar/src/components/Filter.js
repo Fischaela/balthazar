@@ -7,6 +7,7 @@ import Chip from 'material-ui/Chip';
 // Styles
 const styles = {
   chip: {
+    backgroundColor: '#37474F',
     margin: '4px',
   },
   container: {

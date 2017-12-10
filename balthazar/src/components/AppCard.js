@@ -12,11 +12,15 @@ const styles = {
     maxWidth: '250px',
   },
   chip: {
+    backgroundColor: '#37474F',
     margin: '4px',
   },
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  content: {
+    backgroundColor: '#263238',
   },
   headline: {
     marginBottom: '10px',
@@ -31,7 +35,7 @@ class AppCard extends Component {
   render() {
     return (
       <Card style={styles.card}>
-        <CardContent>
+        <CardContent style={styles.content}>
           <Typography type="headline" component="h2" style={styles.headline}>
             {this.props.oil.name}
           </Typography>

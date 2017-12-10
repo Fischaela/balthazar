@@ -8,7 +8,7 @@ import AddIcon from 'material-ui-icons/Add';
 // Styles
 const styles = {
   button: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: '20px',
     right: '20px',
   },
