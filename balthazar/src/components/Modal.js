@@ -84,7 +84,6 @@ class Modal extends Component {
             onChange={this.handleChange('name')}
           />
           <TextField
-            autoFocus
             margin="dense"
             id="tags"
             label="Tags"
