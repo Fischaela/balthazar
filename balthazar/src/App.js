@@ -13,16 +13,65 @@ import Filter from './components/Filter';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import blueGrey from 'material-ui/colors/blueGrey';
+import indigo from 'material-ui/colors/indigo';
 import lime from 'material-ui/colors/lime';
 import pink from 'material-ui/colors/pink';
 
 // Theming
 const theme = createMuiTheme({
   palette: {
-    primary: blueGrey,
-    secondary: lime,
-    error: pink,
+    type: 'dark',
+    primary: {
+      50: '#e3f2fd',
+      100: '#bbdefb',
+      200: '#90caf9',
+      300: '#64b5f6',
+      400: '#42a5f5',
+      500: '#2196f3',
+      600: '#1e88e5',
+      700: '#1976d2',
+      800: '#1565c0',
+      900: '#0d47a1',
+      A100: '#82b1ff',
+      A200: '#448aff',
+      A400: '#2979ff',
+      A700: '#2962ff',
+      contrastDefaultColor: 'light',
+    },
+    secondary: {
+      50: '#e3f2fd',
+      100: '#bbdefb',
+      200: '#90caf9',
+      300: '#64b5f6',
+      400: '#42a5f5',
+      500: '#2196f3',
+      600: '#1e88e5',
+      700: '#1976d2',
+      800: '#1565c0',
+      900: '#0d47a1',
+      A100: '#82b1ff',
+      A200: '#448aff',
+      A400: '#2979ff',
+      A700: '#2962ff',
+      contrastDefaultColor: 'light',
+    },
+    error: {
+      50: '#e3f2fd',
+      100: '#bbdefb',
+      200: '#90caf9',
+      300: '#64b5f6',
+      400: '#42a5f5',
+      500: '#2196f3',
+      600: '#1e88e5',
+      700: '#1976d2',
+      800: '#1565c0',
+      900: '#0d47a1',
+      A100: '#82b1ff',
+      A200: '#448aff',
+      A400: '#2979ff',
+      A700: '#2962ff',
+      contrastDefaultColor: 'light',
+    },
   },
 });
 
@@ -74,11 +123,6 @@ class App extends Component {
 
   addOil(oil) {
     fire.database().ref('oils').push(oil);
-
-    for (let i = 0, iMax = oil.tags.length; i < iMax; i += 1) {
-      fire.database().ref('tags').push(oil.tags[i]);
-    }
-
     this.toggleModal();
   }
 

@@ -10,10 +10,11 @@ import Grid from 'material-ui/Grid';
 // Styles
 const styles = {
   container: {
+    justifyContent: 'center',
     margin: '0 auto',
     padding: '100px 40px',
     width: '100%',
-    maxWidth: '900px',
+    maxWidth: '1600px',
   },
 };
 
