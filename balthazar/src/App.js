@@ -10,6 +10,7 @@ import AppMenu from './components/AppMenu';
 import CardGrid from './components/CardGrid';
 import Modal from './components/Modal';
 import Filter from './components/Filter';
+import RemoveFilterButton from './components/RemoveFilterButton';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -92,6 +93,7 @@ class App extends Component {
     this.addOil = this.addOil.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.filterView = this.filterView.bind(this);
+    this.removeFilter = this.removeFilter.bind(this);
   }
 
   componentWillMount() {
@@ -168,6 +170,12 @@ class App extends Component {
     return tags;
   }
 
+  removeFilter() {
+    this.setState({
+      filteredOils: this.state.oils,
+    });
+  }
+
   toggleModal() {
     if (this.state.modalOpen === true) {
       this.setState({
@@ -186,7 +194,8 @@ class App extends Component {
         <AppMenu />
         { this.state.dataOilsInit &&
           <div>
-            <Filter tags={this.state.tags} handleClick={this.filterView}/>
+            <Filter tags={this.state.tags} handleClick={this.filterView} />
+            <RemoveFilterButton handleClick={this.removeFilter} />
             <CardGrid oils={this.state.filteredOils} />
             <AddButton onClick={this.toggleModal} />
             <Modal

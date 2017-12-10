@@ -12,6 +12,7 @@ const styles = {
   },
   container: {
     display: 'flex',
+    justifyContent: 'center',
     flexWrap: 'wrap',
     margin: '0 auto',
     padding: '100px 40px 0',
