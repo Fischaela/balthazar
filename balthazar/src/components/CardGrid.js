@@ -24,7 +24,7 @@ class CardGrid extends Component {
       <Grid container style={styles.container}>
         {this.props.oils.map(oil => (
           <Grid key={oil.name} item>
-            <AppCard oil={oil} />
+            <AppCard oil={oil} handleClick={this.props.handleClick}/>
           </Grid>
         ))}
       </Grid>

@@ -87,6 +87,8 @@ class App extends Component {
       oils: [],
       filteredOils: [],
       modalOpen: false,
+      modalNameValue: '',
+      modalTags: [],
       tags: [],
     };
 
@@ -94,6 +96,7 @@ class App extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.filterView = this.filterView.bind(this);
     this.removeFilter = this.removeFilter.bind(this);
+    this.handleCardEdit = this.handleCardEdit.bind(this);
   }
 
   componentWillMount() {
@@ -178,6 +181,10 @@ class App extends Component {
     return tags;
   }
 
+  handleCardEdit(oil) {
+    console.log('Edit', oil);
+  }
+
   removeFilter() {
     this.setState({
       filteredOils: this.state.oils,
@@ -204,13 +211,15 @@ class App extends Component {
           <div>
             <Filter tags={this.state.tags} handleClick={this.filterView} />
             <RemoveFilterButton handleClick={this.removeFilter} />
-            <CardGrid oils={this.state.filteredOils} />
+            <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit}/>
             <AddButton onClick={this.toggleModal} />
             <Modal
               ref="modal"
               isOpen={this.state.modalOpen}
               handleRequestClose={this.toggleModal}
               handleRequestAdd={this.addOil}
+              name={this.state.modalNameValue}
+              tags={this.state.modalTags}
             />
           </div>
         }

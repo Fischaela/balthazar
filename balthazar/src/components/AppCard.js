@@ -2,13 +2,16 @@
 import React, { Component } from 'react';
 
 // Material UI
-import Card, { CardContent } from 'material-ui/Card';
+import Card, { CardContent, CardActions } from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
 import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+import ModeEditIcon from 'material-ui-icons/ModeEdit';
 
 // Styles
 const styles = {
   card: {
+    backgroundColor: '#263238',
     maxWidth: '250px',
   },
   chip: {
@@ -19,8 +22,8 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
   },
-  content: {
-    backgroundColor: '#263238',
+  actions: {
+    justifyContent: 'flex-end',
   },
   headline: {
     marginBottom: '10px',
@@ -45,6 +48,11 @@ class AppCard extends Component {
             ))}
           </div>
         </CardContent>
+        <CardActions style={styles.actions}>
+          <IconButton onClick={() => {this.props.handleClick(this.props.oil)}}>
+            <ModeEditIcon />
+          </IconButton>
+        </CardActions>
       </Card>
     );
   }
