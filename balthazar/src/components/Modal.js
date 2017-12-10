@@ -110,7 +110,7 @@ class Modal extends Component {
             Cancel
           </Button>
           <Button onClick={this.handleSubmit} color="primary">
-            Subscribe
+            Add Oil
           </Button>
         </DialogActions>
       </Dialog>

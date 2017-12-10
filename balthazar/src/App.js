@@ -137,6 +137,7 @@ class App extends Component {
   addOil(oil) {
     fire.database().ref('oils').push(oil);
     this.toggleModal();
+    console.log('Add Oil', oil);
   }
 
   filterView(tag) {
