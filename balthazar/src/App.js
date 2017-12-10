@@ -34,10 +34,8 @@ class App extends Component {
     super(props);
     this.state = {
       dataOilsInit: false,
-      dataTagsInit: false,
       oils: [],
       modalOpen: false,
-      tags: [],
     };
 
     this.addOil = this.addOil.bind(this);
@@ -63,24 +61,6 @@ class App extends Component {
         this.setState({ dataOilsInit: true });
       });
     });
-
-    let tagsRef = fb.ref('tags').orderByKey().limitToLast(100);
-    tagsRef.on('child_added', snapshot => {
-      let tag = { text: snapshot.val(), id: snapshot.key };
-      this.setState({ tags: [tag].concat(this.state.tags) });
-    });
-    tagsRef.once('value', snapshot => {
-      let tags = [];
-      console.log('Value Tags', snapshot.val());
-      snapshot.forEach(snapshot => {
-        tags.push(snapshot.val());
-        console.log(snapshot.val());
-      });
-      this.setState({ tags: tags }, () => {
-        this.setState({ dataTagsInit: true });
-      });
-    });
-
   }
 
   addOil(oil) {
@@ -109,9 +89,9 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <AppMenu />
-        { this.state.dataOilsInit && this.state.dataTagsInit &&
+        { this.state.dataOilsInit &&
           <div>
-            <Filter tags={this.state.tags} />
+            <Filter />
             <CardGrid oils={this.state.oils} />
             <AddButton onClick={this.toggleModal} />
             <Modal

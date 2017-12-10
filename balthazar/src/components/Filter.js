@@ -27,9 +27,7 @@ class Filter extends Component {
   render() {
     return (
       <div style={styles.container}>
-        {this.props.tags.map(tag => (
-           <Chip label={tag} style={styles.chip} key={tag}/>
-        ))}
+           <Chip label="test" style={styles.chip} key="test"/>
       </div>
     );
   }

@@ -36,9 +36,9 @@ class AppCard extends Component {
             {this.props.oil.name}
           </Typography>
           <div style={styles.chips}>
-          {this.props.oil.tags.map(tag => (
-            <Chip label={tag} style={styles.chip} key={tag}/>
-          ))}
+            {this.props.oil.tags && this.props.oil.tags.map(tag => (
+              <Chip label={tag} style={styles.chip} key={tag}/>
+            ))}
           </div>
         </CardContent>
       </Card>
