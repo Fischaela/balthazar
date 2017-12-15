@@ -153,7 +153,12 @@ class App extends Component {
     let activeTags = this.state.activeTags;
     let filteredOils = [];
 
-    activeTags.push(tag.name);
+    if (tag.checked === false || activeTags.length === 0) {
+      activeTags.push(tag.name);
+    } else {
+      let index = activeTags.indexOf(tag.name);
+      activeTags.splice(index, 1);
+    }
 
     // get a new array with filtered oils
     for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
