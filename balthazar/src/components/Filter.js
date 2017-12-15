@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 
 // Material UI
-import Chip from 'material-ui/Chip';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
 
 // Styles
 const styles = {
@@ -26,12 +27,28 @@ class Filter extends Component {
     super(props);
   }
 
+  handleClick(tag) {
+    this.props.handleClick(tag);
+  }
+
   render() {
     return (
       <div style={styles.container}>
-      {this.props.tags.map(tag => (
-        <Chip label={tag} style={styles.chip} key={tag} onClick={() => this.props.handleClick(tag)} />
-      ))}
+        <FormGroup row>
+          {this.props.tags.map(tag => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked="true"
+                onChange={() => this.handleClick(tag)}
+                value={tag}
+              />
+            }
+            label={tag}
+						key={tag}
+          />
+        ))}
+        </FormGroup>
       </div>
     );
   }

@@ -76,6 +76,12 @@ const theme = createMuiTheme({
   },
 });
 
+const styles = {
+	wrapper: {
+		backgroundColor: '#455A64',
+	},
+};
+
 // Init Data
 const fb = fire.database();
 
@@ -109,7 +115,6 @@ class App extends Component {
       let oils = [];
       let tags = [];
       snapshot.forEach(snapshot => {
-        console.log('Snapshot', snapshot.key);
         oils.push({
           name: snapshot.child('name').val(),
           tags: snapshot.child('tags').val(),
@@ -179,7 +184,6 @@ class App extends Component {
       return index == self.indexOf(elem);
     });
 
-    console.log('Tags', tags);
     return tags;
   }
 
@@ -210,7 +214,7 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <AppMenu />
         { this.state.dataOilsInit &&
-          <div>
+          <div  style={styles.wrapper}>
             <Filter tags={this.state.tags} handleClick={this.filterView} />
             <RemoveFilterButton handleClick={this.removeFilter} />
             <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit}/>
