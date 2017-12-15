@@ -226,8 +226,19 @@ class App extends Component {
   }
 
   removeFilter() {
+    let tags = this.state.tags;
+    let newTags = [];
+
+    for (let i = 0, iMax = tags.length; i < iMax; i += 1) {
+      newTags.push({
+        name: tags[i].name,
+        checked: true,
+      });
+    }
     this.setState({
       filteredOils: this.state.oils,
+      activeTags: this.state.tags,
+      tags: newTags,
     });
   }
 
