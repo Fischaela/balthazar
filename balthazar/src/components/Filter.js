@@ -39,13 +39,13 @@ class Filter extends Component {
           <FormControlLabel
             control={
               <Checkbox
-                checked="true"
-                onChange={() => this.handleClick(tag)}
-                value={tag}
+                checked={tag.checked}
+                onChange={(e) => this.handleClick(tag)}
+                value={tag.name}
               />
             }
-            label={tag}
-						key={tag}
+            label={tag.name}
+            key={tag.name}
           />
         ))}
         </FormGroup>

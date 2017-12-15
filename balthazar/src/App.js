@@ -77,9 +77,9 @@ const theme = createMuiTheme({
 });
 
 const styles = {
-	wrapper: {
-		backgroundColor: '#455A64',
-	},
+  wrapper: {
+    backgroundColor: '#455A64',
+  },
 };
 
 // Init Data
@@ -127,8 +127,8 @@ class App extends Component {
       });
       tags = this.getTagsFromOils(oils);
       tags.sort((a, b) => {
-        if (a < b) return -1;
-        if (a > b) return 1;
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
       });
       this.setState({
         oils: oils,
@@ -149,15 +149,35 @@ class App extends Component {
   filterView(tag) {
     console.log('Tag Click', tag);
     const oils = this.state.oils;
+    const tags = this.state.tags;
+    let newTags = [];
+    let activeTags = [];
     let filteredOils = [];
+
+    activeTags.push(tag);
 
     for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
       if (oils[i].tags) {
         for (let j = 0, jMax = oils[i].tags.length; j < jMax; j += 1) {
-          if (oils[i].tags[j] === tag) {
+          if (oils[i].tags[j] === tag.name) {
             filteredOils.push(oils[i]);
           }
         }
+      }
+    }
+
+    for (let i = 0, iMax = tags.length; i < iMax; i += 1) {
+      if (tag === tags[i]) {
+        let newTag = {
+          name: tag.name,
+          checked: true,
+        };
+        newTags.push(newTag);
+      } else {
+        newTags.push({
+          name: tags[i].name,
+          checked: false,
+        });
       }
     }
 
@@ -167,6 +187,7 @@ class App extends Component {
 
     this.setState({
       filteredOils: filteredOils,
+      tags: newTags,
     });
   }
 
@@ -176,14 +197,17 @@ class App extends Component {
     for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
       if (oils[i].tags) {
         for (let j = 0, jMax = oils[i].tags.length; j < jMax; j += 1) {
-          tags.push(oils[i].tags[j]);
+          tags.push({
+            name: oils[i].tags[j],
+            checked: true,
+          });
         }
       }
     }
-    tags = tags.filter(function(elem, index, self) {
-      return index == self.indexOf(elem);
-    });
-
+    console.log(tags);
+    tags = new Set(tags.map(e => JSON.stringify(e)));
+    tags = Array.from(tags).map(e => JSON.parse(e));
+    console.log(tags);
     return tags;
   }
 
@@ -220,7 +244,7 @@ class App extends Component {
             <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit}/>
             <AddButton onClick={this.toggleModal} />
             <Modal
-              ref="modal"
+              ref=".modal"
               isOpen={this.state.modalOpen}
               handleRequestClose={this.toggleModal}
               handleRequestAdd={this.addOil}
