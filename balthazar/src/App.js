@@ -108,11 +108,12 @@ class App extends Component {
     oilsRef.once('value', snapshot => {
       let oils = [];
       let tags = [];
-      console.log('Value Oils', snapshot.val());
       snapshot.forEach(snapshot => {
+        console.log('Snapshot', snapshot.key);
         oils.push({
           name: snapshot.child('name').val(),
           tags: snapshot.child('tags').val(),
+          id: snapshot.key,
         });
       });
       oils.sort((a, b) => {
