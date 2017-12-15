@@ -97,6 +97,7 @@ class App extends Component {
       modalTags: [],
       tags: [],
       activeTags: [],
+      loggedIn: false,
     };
 
     this.addOil = this.addOil.bind(this);
@@ -263,7 +264,9 @@ class App extends Component {
             <Filter tags={this.state.tags} handleClick={this.filterView} />
             <RemoveFilterButton handleClick={this.removeFilter} />
             <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit}/>
-            <AddButton onClick={this.toggleModal} />
+            { this.state.loggedIn &&
+              <AddButton onClick={this.toggleModal} />
+            }
             <Modal
               ref=".modal"
               isOpen={this.state.modalOpen}
