@@ -48,11 +48,13 @@ class AppCard extends Component {
             ))}
           </div>
         </CardContent>
-        <CardActions style={styles.actions}>
-          <IconButton onClick={() => {this.props.handleClick(this.props.oil)}}>
-            <ModeEditIcon />
-          </IconButton>
-        </CardActions>
+        { this.props.loggedIn &&
+          <CardActions style={styles.actions}>
+            <IconButton onClick={() => {this.props.handleClick(this.props.oil)}}>
+              <ModeEditIcon />
+            </IconButton>
+          </CardActions>
+        }
       </Card>
     );
   }

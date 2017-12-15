@@ -263,7 +263,7 @@ class App extends Component {
           <div  style={styles.wrapper}>
             <Filter tags={this.state.tags} handleClick={this.filterView} />
             <RemoveFilterButton handleClick={this.removeFilter} />
-            <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit}/>
+            <CardGrid oils={this.state.filteredOils} handleClick={this.handleCardEdit} loggedIn={this.state.loggedIn} />
             { this.state.loggedIn &&
               <AddButton onClick={this.toggleModal} />
             }
