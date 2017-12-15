@@ -96,6 +96,7 @@ class App extends Component {
       modalNameValue: '',
       modalTags: [],
       tags: [],
+      activeTags: [],
     };
 
     this.addOil = this.addOil.bind(this);
@@ -143,36 +144,42 @@ class App extends Component {
   addOil(oil) {
     fire.database().ref('oils').push(oil);
     this.toggleModal();
-    console.log('Add Oil', oil);
   }
 
   filterView(tag) {
-    console.log('Tag Click', tag);
     const oils = this.state.oils;
     const tags = this.state.tags;
     let newTags = [];
-    let activeTags = [];
+    let activeTags = this.state.activeTags;
     let filteredOils = [];
 
-    activeTags.push(tag);
+    activeTags.push(tag.name);
 
+    // get a new array with filtered oils
     for (let i = 0, iMax = oils.length; i < iMax; i += 1) {
       if (oils[i].tags) {
         for (let j = 0, jMax = oils[i].tags.length; j < jMax; j += 1) {
-          if (oils[i].tags[j] === tag.name) {
-            filteredOils.push(oils[i]);
+          for (let k = 0, kMax = activeTags.length; k < kMax; k += 1) {
+            if (oils[i].tags[j] === activeTags[k]) {
+              filteredOils.push(oils[i]);
+            }
           }
         }
       }
     }
 
+    filteredOils = filteredOils.filter(function(elem, index, self) {
+      return index == self.indexOf(elem);
+    });
+
+    // get a new array with tags
     for (let i = 0, iMax = tags.length; i < iMax; i += 1) {
-      if (tag === tags[i]) {
-        let newTag = {
-          name: tag.name,
+
+      if (activeTags.includes(tags[i].name)) {
+        newTags.push({
+          name: tags[i].name,
           checked: true,
-        };
-        newTags.push(newTag);
+        });
       } else {
         newTags.push({
           name: tags[i].name,
@@ -181,11 +188,11 @@ class App extends Component {
       }
     }
 
-    filteredOils = filteredOils.filter(function(elem, index, self) {
-      return index == self.indexOf(elem);
-    });
+    newTags = new Set(newTags.map(e => JSON.stringify(e)));
+    newTags = Array.from(newTags).map(e => JSON.parse(e));
 
     this.setState({
+      activeTags: activeTags,
       filteredOils: filteredOils,
       tags: newTags,
     });
@@ -204,10 +211,8 @@ class App extends Component {
         }
       }
     }
-    console.log(tags);
     tags = new Set(tags.map(e => JSON.stringify(e)));
     tags = Array.from(tags).map(e => JSON.parse(e));
-    console.log(tags);
     return tags;
   }
 
