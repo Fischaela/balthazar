@@ -8,7 +8,7 @@ import AddIcon from 'material-ui-icons/Add';
 // Styles
 const styles = {
   button: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: '20px',
     right: '20px',
   },
@@ -17,7 +17,7 @@ const styles = {
 class AddButton extends Component {
   render() {
     return (
-      <Button fab color="primary" aria-label="add" style={styles.button}>
+      <Button fab color="primary" aria-label="add" style={styles.button} onClick={this.props.onClick}>
         <AddIcon />
       </Button>
     );
